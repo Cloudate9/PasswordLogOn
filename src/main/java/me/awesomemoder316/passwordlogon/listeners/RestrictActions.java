@@ -14,16 +14,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.UUID;
-
 public class RestrictActions implements Listener {
     @EventHandler
     public void stopMove(PlayerMoveEvent e) {
         if (Utils.noPasswordEntered.containsKey(e.getPlayer().getUniqueId())) {
-            Location spawn = new Location(e.getPlayer().getWorld(), 0, 80, 0);
-            double distAway = e.getPlayer().getLocation().distance(spawn);
+            double distAway = e.getPlayer().getLocation().distance(Utils.teleportTo(e.getPlayer().getWorld()));
             if (distAway > 10) {
-                e.getPlayer().teleport(spawn);
+                e.getPlayer().teleport(Utils.teleportTo(e.getPlayer().getWorld()));
                 e.getPlayer().sendMessage(ChatColor.RED + "To move further away, enter your password in chat!");
             }
         }

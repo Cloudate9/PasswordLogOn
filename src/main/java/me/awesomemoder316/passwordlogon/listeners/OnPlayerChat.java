@@ -1,15 +1,12 @@
 package me.awesomemoder316.passwordlogon.listeners;
 
 import me.awesomemoder316.passwordlogon.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import java.util.UUID;
 
 public class OnPlayerChat implements Listener {
 
