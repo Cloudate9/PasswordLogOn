@@ -8,14 +8,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.UUID;
 
 public class Utils {
-    private static boolean firstCheck = false;
+    private static boolean firstCheck = true;
     public static HashMap<UUID, Location> noPasswordEntered = new HashMap<>();
     public static boolean update = false;
     public static PasswordLogOn plugin;
@@ -23,9 +22,8 @@ public class Utils {
     public static void askPassword(Player p) {
         Utils.defineBedrockPos(p);
         Utils.noPasswordEntered.put(p.getUniqueId(), p.getLocation());
-        Location spawn = new Location(p.getWorld(), 0, 80, 0);
 
-        p.teleport(spawn);
+        p.teleport(teleportTo(p.getWorld()));
 
         if (plugin.getConfig().contains("password." + p.getUniqueId())) {
             p.sendMessage(ChatColor.GOLD + "[Password Log On]: Enter your password in chat to continue playing.");
@@ -52,12 +50,12 @@ public class Utils {
 
                     String[] releases = result.split("\\{"); //Splits per entry. Shows all releases
                     String[] allEntriesOfRelease =
-                            releases[releases.length - 1].split(","); //Shows only latest release, as that is the most updated.
+                            releases[1].split(","); //Shows only latest release, as that is the most updated.
 
                     String newVersion = null;
 
                     for (String string : allEntriesOfRelease) {
-                        if (string.startsWith("\"filename\":\"")) {
+                        if (string.startsWith("\"fileName\":\"")) {
                             string = string.replace("\"", "");
                             string = string.replace(".jar", "");
                             newVersion = string.replaceFirst("^filename:Endermaning-", "");
@@ -66,29 +64,23 @@ public class Utils {
                     }
 
                     if (newVersion == null) {
-                        System.out.println(ChatColor.YELLOW + "[Password Log On] " + ChatColor.RED + "Failed to check for updates!");
+                        plugin.getLogger().info( ChatColor.RED + "Failed to check for updates!");
 
-                        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
-                            check();
-                        }, 576000);
+                        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, Utils::check, 576000);
 
                         return;
                     }
-
                     if (newVersion.equals(plugin.getDescription().getVersion())) {
 
-                        if (!firstCheck) {
-                            System.out.println(ChatColor.YELLOW + "[Password Log On] " + ChatColor.AQUA + "is up to date!");
-                            firstCheck = true;
+                        if (firstCheck) {
+                            plugin.getLogger().info(ChatColor.AQUA + "is up to date!");
+                            firstCheck = false;
                         }
 
-                        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
-                            check();
-                        }, 576000);
+                        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, Utils::check, 576000);
                         return;
                     }
-
-                    System.out.print(ChatColor.YELLOW + "[Password Log On] " + ChatColor.AQUA + "can be updated at https://www.curseforge.com/minecraft/bukkit-plugins/password-log-on!");
+                    plugin.getLogger().info(ChatColor.AQUA + "can be updated at https://www.curseforge.com/minecraft/bukkit-plugins/password-log-on!");
                     update = true;
                 } catch (IOException ignored) {
                 }
@@ -104,10 +96,10 @@ public class Utils {
         double z1 = plugin.getConfig().getDouble("z1");
         double z2 = plugin.getConfig().getDouble("z2");
 
-        if (x1 < x2) {
+        if (x1 <= x2) {
             for (double xPos = x1; xPos < x2 + 1; xPos++) {
 
-                if (z1 < z2) {
+                if (z1 <= z2) {
                     for (double zPos = z1; zPos < z2 + 1; zPos++) {
                         setBedrock(new Location(p.getWorld(), xPos, y, zPos),
                                 new Location(p.getWorld(), xPos, y + 1, zPos),
@@ -123,8 +115,7 @@ public class Utils {
             }
         } else {
             for (double xPos = x2; xPos < x1 + 1; xPos++) {
-
-                if (z1 < z2) {
+                if (z1 <= z2) {
                     for (double zPos = z1; zPos < z2 + 1; zPos++) {
                         setBedrock(new Location(p.getWorld(), xPos, y, zPos),
                                 new Location(p.getWorld(), xPos, y + 1, zPos),
@@ -143,12 +134,9 @@ public class Utils {
 
     public static void giveResistance() {
         BukkitScheduler scheduler = plugin.getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                for (UUID u : noPasswordEntered.keySet()) {
-                    Bukkit.getPlayer(u).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 101, 254));
-                }
+        scheduler.scheduleSyncRepeatingTask(plugin, () -> {
+            for (UUID u : noPasswordEntered.keySet()) {
+                Bukkit.getPlayer(u).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 101, 254));
             }
         }, 0L, 100L);
     }
@@ -168,6 +156,16 @@ public class Utils {
                 noPasswordEntered.remove(player.getUniqueId());
             }
         }.runTaskLater(plugin, 120L);
+    }
+
+    public static Location teleportTo(World w) {
+        double x1 = plugin.getConfig().getDouble("x1");
+        double x2 = plugin.getConfig().getDouble("x2");
+        double y = plugin.getConfig().getDouble("y");
+        double z1 = plugin.getConfig().getDouble("z1");
+        double z2 = plugin.getConfig().getDouble("z2");
+
+        return new Location(w, (x1 + x2)/2, y + 1, (z1 + z2)/2);
     }
 
     public static void teleportEffects(Player player) {
