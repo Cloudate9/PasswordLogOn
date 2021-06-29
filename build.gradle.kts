@@ -1,6 +1,7 @@
 plugins {
     java
     id("com.github.johnrengelman.shadow") version ("5.2.0")
+    `maven-publish`
 }
 
 group = "me.awesomemoder316.passwordlogon"
@@ -31,3 +32,18 @@ tasks.shadowJar {
     archiveFileName.set(rootProject.name + "-" + rootProject.version + ".jar")
     relocate("org.bstats", "me.awesomemoder316.passwordlogon")
 }
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = rootProject.group.toString()
+            artifactId = rootProject.name
+            version = rootProject.version.toString()
+
+            from(components["kotlin"])
+            artifact(tasks["shadowJar"])
+        }
+    }
+}
+
+
