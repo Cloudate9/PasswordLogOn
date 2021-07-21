@@ -13,7 +13,7 @@ public class Password implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("password")) {
 
                 if (args.length < 2) {
-                    sender.sendMessage(ChatColor.RED + "Incorrect usage: command is /password [set/reset] [(password)]");
+                    sender.sendMessage(ChatColor.RED + "Incorrect usage: command is /password [set/reset] (password)");
                     return false;
                 }
                 switch (args[0].toLowerCase()) {
@@ -28,7 +28,7 @@ public class Password implements CommandExecutor {
                         Player p = (Player) sender;
 
                         if (Utils.plugin.getConfig().contains("password." + p.getUniqueId())) {
-                            sender.sendMessage(ChatColor.RED + "You have set a password in the past! Use /password reset [(old password)] [(new password)] to change!");
+                            sender.sendMessage(ChatColor.RED + "You have set a password in the past! Use /password reset (old password) (new password) to change!");
                             sender.sendMessage(ChatColor.RED + "If you believe that someone else not authorised by you set the password, contact your console operator!");
                             return false;
                         }
@@ -37,7 +37,7 @@ public class Password implements CommandExecutor {
                             Utils.plugin.getConfig().set("password." + p.getUniqueId(), playerPassword);
                             Utils.plugin.getConfig().options().copyHeader(true);
                             Utils.plugin.saveConfig();
-                            sender.sendMessage(ChatColor.GOLD + "You set your password as " + playerPassword + " ! You will need to use this password everytime you log on.");
+                            sender.sendMessage(ChatColor.GOLD + "You set your password as " + playerPassword + "! You will need to use this password everytime you log on.");
 
                     return true;
 
@@ -53,11 +53,11 @@ public class Password implements CommandExecutor {
 
                         if (!(Utils.plugin.getConfig().contains("password." + p.getUniqueId()))) {
                             sender.sendMessage(ChatColor.RED + "You cannot reset your password as you do not have a current password stored.");
-                            sender.sendMessage(ChatColor.RED + "Set your password instead, with /password set [(password)]");
+                            sender.sendMessage(ChatColor.RED + "Set your password instead, with /password set (password)");
                             return false;
                         }
                             if (args.length < 3) {
-                                sender.sendMessage(ChatColor.RED + "Incorrect usage! Command is /password reset [(old password)] [(new password)]!");
+                                sender.sendMessage(ChatColor.RED + "Incorrect usage! Command is /password reset (old password) (new password)!");
                                 return false;
                             }
                                 String s = Utils.plugin.getConfig().getString("password." + p.getUniqueId());
