@@ -49,8 +49,9 @@ public class Utils {
                     String result = sb.toString();
 
                     String[] releases = result.split("\\{"); //Splits per entry. Shows all releases
-                    String newVersion = null;
                     String mcVersion = null;
+                    String newVersion = null;
+                    String newVersionTemp = null;
 
                     for (int x = 1; x < releases.length; x ++) { //releases[0] is "{", and releases[releases.length] is "}"
 
@@ -62,7 +63,8 @@ public class Utils {
                             if (string.startsWith("\"fileName\":\"")) {
                                 string = string.replace("\"", "");
                                 string = string.replace(".jar", "");
-                                newVersion = string.replaceFirst("^filename:PasswordLogOn-", "");
+                                newVersion = newVersionTemp;
+                                newVersionTemp = string.replace("fileName:PasswordLogOn-", "");
                             }
 
                             if (string.startsWith("\"gameVersion\":\"")) {
@@ -70,7 +72,6 @@ public class Utils {
                                 string = string.replace(".jar", "");
 
                                 if (mcVersion == null) {
-
                                     if (x != releases.length - 1) {
 
                                         mcVersion = string;
@@ -100,8 +101,7 @@ public class Utils {
                                 }
                                 plugin.getLogger().info(ChatColor.AQUA + "can be updated at https://www.curseforge.com/minecraft/bukkit-plugins/password-log-on!");
                                 update = true;
-
-                                break;
+                                return;
                             }
                         }
                     }
@@ -174,9 +174,9 @@ public class Utils {
         BukkitScheduler scheduler = plugin.getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(plugin, () -> {
             for (UUID u : noPasswordEntered.keySet()) {
-                Bukkit.getPlayer(u).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 101, 254));
+                Bukkit.getPlayer(u).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 61, 254));
             }
-        }, 0L, 100L);
+        }, 0, 60);
     }
 
     private static void setBedrock(Location a, Location b, Location c) {
@@ -197,11 +197,27 @@ public class Utils {
     }
 
     public static Location teleportTo(World w) {
-        double x1 = plugin.getConfig().getDouble("x1");
-        double x2 = plugin.getConfig().getDouble("x2");
-        double y = plugin.getConfig().getDouble("y");
-        double z1 = plugin.getConfig().getDouble("z1");
-        double z2 = plugin.getConfig().getDouble("z2");
+        String environment;
+
+        switch (w.getEnvironment()) {
+            case NORMAL:
+                environment = "overworld";
+                break;
+
+            case NETHER:
+                environment = "nether";
+                break;
+
+            default:
+                environment = "end";
+                break;
+        }
+
+        double x1 = plugin.getConfig().getDouble(environment + ".x1");
+        double x2 = plugin.getConfig().getDouble(environment + ".x2");
+        double y = plugin.getConfig().getDouble(environment + ".y");
+        double z1 = plugin.getConfig().getDouble(environment + ".z1");
+        double z2 = plugin.getConfig().getDouble(environment + ".z2");
 
         return new Location(w, (x1 + x2)/2, y + 1, (z1 + z2)/2);
     }
