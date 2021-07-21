@@ -21,6 +21,11 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
+tasks.compileJava {
+    sourceCompatibility = "11"
+    targetCompatibility = "11"
+}
+
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
