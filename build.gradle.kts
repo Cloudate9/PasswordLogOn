@@ -1,10 +1,10 @@
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version ("5.2.0")
+    id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 
 group = "me.awesomemoder316.passwordlogon"
-version = "1.1.0"
+version = "1.2.0"
 
 repositories {
     mavenCentral()

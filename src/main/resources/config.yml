@@ -1,9 +1,24 @@
+# DO NOT edit the config version.
 # The area between x1 and x2 is the x position of the platform (inclusive of x1 and x2)
 # y is the level at which the platform is at. y, and 2 blocks above y, will be cleared in order to stop the player from suffocating.
 # The area between z1 and z2 is the z position of the platform (inclusive of z1 and z2)
 
-x1: -2.0
-x2: 2.0
-y: 80.0
-z1: -2.0
-z2: 2.0
+configVersion: 1.2.0
+overworld:
+  x1: -2.0
+  x2: 2.0
+  y: 80.0
+  z1: -2.0
+  z2: 2.0
+nether:
+  x1: -2.0
+  x2: 2.0
+  y: 80.0
+  z1: -2.0
+  z2: 2.0
+end:
+  x1: -2.0
+  x2: 2.0
+  y: 80.0
+  z1: -2.0
+  z2: 2.0
