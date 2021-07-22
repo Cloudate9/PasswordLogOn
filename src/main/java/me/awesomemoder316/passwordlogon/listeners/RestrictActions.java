@@ -11,10 +11,24 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class RestrictActions implements Listener {
+
+    @EventHandler
+    public void stopCommand(PlayerCommandPreprocessEvent e) {
+        if (Utils.noPasswordEntered.containsKey(e.getPlayer().getUniqueId())) {
+            if (!e.getMessage().startsWith("/pw") && !e.getMessage().startsWith("/password")) {
+                e.setCancelled(true);
+                e.getPlayer().sendMessage(ChatColor.RED + "To send commands, enter your password in chat!" + ChatColor.YELLOW +
+                        "\nDid you mean to do /pw?");
+                Utils.plugin.getLogger().info(e.getPlayer().getName() + " tried to send a command without entering their password, and was stopped!");
+            }
+        }
+    }
+
     @EventHandler
     public void stopMove(PlayerMoveEvent e) {
         if (Utils.noPasswordEntered.containsKey(e.getPlayer().getUniqueId())) {
