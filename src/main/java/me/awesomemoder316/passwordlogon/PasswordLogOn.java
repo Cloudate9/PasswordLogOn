@@ -22,6 +22,7 @@ public class PasswordLogOn extends JavaPlugin {
         Utils.plugin = this;
 
         getConfig().options().copyDefaults(true);
+        getConfig().set("configVersion", "1.3.0");
         getConfig().options().copyHeader(true);
         saveConfig();
 
@@ -70,6 +71,7 @@ public class PasswordLogOn extends JavaPlugin {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
     }
 
     public void onDisable() {
