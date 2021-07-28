@@ -4,18 +4,29 @@ import me.awesomemoder316.passwordlogon.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.EntityTeleportEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class RestrictActions implements Listener {
+
+    @EventHandler
+    public void stopBreak(BlockBreakEvent e) {
+        if (Utils.noPasswordEntered.containsKey(e.getPlayer().getUniqueId())) {
+            e.setCancelled(true);
+            e.getPlayer().sendMessage(ChatColor.RED + "To break blocks, enter your password in chat!");
+        }
+    }
 
     @EventHandler
     public void stopCommand(PlayerCommandPreprocessEvent e) {
@@ -41,10 +52,15 @@ public class RestrictActions implements Listener {
     }
 
     @EventHandler
-    public void stopBreak(BlockBreakEvent e) {
-        if (Utils.noPasswordEntered.containsKey(e.getPlayer().getUniqueId())) {
+    public void stopPetTeleport(EntityTeleportEvent e) {
+        if (!(e.getEntity() instanceof Tameable)) return;
+
+        Tameable entity = (Tameable) e.getEntity();
+
+        if (entity.getOwner() == null) return;
+
+        if (Utils.noPasswordEntered.containsKey(entity.getOwner().getUniqueId())) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage(ChatColor.RED + "To break blocks, enter your password in chat!");
         }
     }
 
