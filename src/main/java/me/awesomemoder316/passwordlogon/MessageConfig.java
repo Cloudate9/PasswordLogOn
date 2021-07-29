@@ -23,19 +23,25 @@ public class MessageConfig {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
                         '&', config.getString("errors.alreadySetPassword")
-                .replace("\\n", "\n")));
+                                .replace("\\n", "\n")
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
     }
 
     public void failedLogIn(CommandSender sender) {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
-                        '&', config.getString("errors.failedLogIn")));
+                        '&', config.getString("errors.failedLogIn")
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
     }
 
     public void failedReset(CommandSender sender) {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
-                        '&', config.getString("errors.failedReset")));
+                        '&', config.getString("errors.failedReset")
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
     }
 
     public void incorrectUsage(CommandSender sender, String type) {
@@ -62,56 +68,74 @@ public class MessageConfig {
 
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
-                        '&', config.getString(path)));
+                        '&', config.getString(path)
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
     }
 
     public void loginPrompt(CommandSender sender) {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
-                        '&', config.getString("loginPrompt")));
+                        '&', config.getString("loginPrompt")
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
     }
 
     public void noPasswordSet(CommandSender sender) {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
-                        '&', config.getString("errors.noPasswordSet")));
+                        '&', config.getString("errors.noPasswordSet")
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
     }
 
     public void passwordSetConfirmation(CommandSender sender, String playerPassword) {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
                         '&', config.getString("success.passwordSetConfirmation")
-                                .replace("$playerPassword", playerPassword)));
+                                .replace("$playerPassword", playerPassword)
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
     }
 
     public void passwordCreatePrompt(CommandSender sender) {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
-                        '&', config.getString("passwordCreatePrompt")));
+                        '&', config.getString("passwordCreatePrompt")
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
     }
 
     public void rejectConsole(CommandSender sender) {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
-                        '&', config.getString("errors.rejectConsole")));
+                        '&', config.getString("errors.rejectConsole")
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
     }
 
     public void rejectPlayer(CommandSender sender) {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
-                        '&', config.getString("errors.rejectPlayer")));
+                        '&', config.getString("errors.rejectPlayer")
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
     }
 
     public void restrictAction(CommandSender sender) {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
-                        '&', config.getString("errors.restrictAction")));
+                        '&', config.getString("errors.restrictAction")
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                                ));
     }
 
     public void successfulLogIn(CommandSender sender) {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(
-                        '&', config.getString("success.successfulLogIn")));
+                        '&', config.getString("success.successfulLogIn")
+                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
     }
 
 }
