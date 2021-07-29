@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.UUID;
 
 public class Utils {
@@ -168,6 +167,7 @@ public class Utils {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static void giveResistance() {
         BukkitScheduler scheduler = plugin.getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(plugin, () -> {
@@ -187,9 +187,9 @@ public class Utils {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if (noPasswordEntered.containsKey(player.getUniqueId())) return;
                 player.teleport(noPasswordEntered.get(player.getUniqueId()));
                 player.playSound(player.getLocation(), Sound.ITEM_CHORUS_FRUIT_TELEPORT, 1, 1);
-                noPasswordEntered.remove(player.getUniqueId());
             }
         }.runTaskLater(plugin, 120L);
     }

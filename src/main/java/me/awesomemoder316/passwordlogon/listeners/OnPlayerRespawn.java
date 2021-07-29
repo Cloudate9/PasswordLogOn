@@ -2,8 +2,6 @@ package me.awesomemoder316.passwordlogon.listeners;
 
 import me.awesomemoder316.passwordlogon.MessageConfig;
 import me.awesomemoder316.passwordlogon.Utils;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
