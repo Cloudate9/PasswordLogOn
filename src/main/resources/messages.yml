@@ -17,7 +17,7 @@ errors:
   rejectPlayer: "$pluginPrefix &cOnly the console can perform this action!"
   restrictAction: "$pluginPrefix &cYou need to enter your password to do that!"
 
-loginPrompt: "$pluginPrefix &1Enter your password in chat to continue playing.
+loginPrompt: "$pluginPrefix &9Enter your password in chat to continue playing.
 If you forgot your password, contact someone with access to the files of the server."
 passwordCreatePrompt: "$pluginPrefix &c1et a password to continue playing, using /password set (password)"
 
