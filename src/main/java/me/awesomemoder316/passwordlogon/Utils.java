@@ -67,10 +67,9 @@ public class Utils {
 
                         if (part.startsWith("\"tag_name\":\"")) {
 
-                            latestTag = part
-                                    .replaceFirst("^\"tag_name\":\"", "");
+                            latestTag = part.substring(12);
 
-                            if (latestTag.endsWith("\"")) latestTag = part.substring(0, part.length() - 1);
+                            if (latestTag.endsWith("\"")) latestTag = latestTag.substring(0, latestTag.length() - 1);
 
 
                             if (latestTag.equals(plugin.getDescription().getVersion())) {
