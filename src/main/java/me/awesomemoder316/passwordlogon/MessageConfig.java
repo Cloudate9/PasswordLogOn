@@ -73,6 +73,14 @@ public class MessageConfig {
                 ));
     }
 
+    public void loginAreaChanged(CommandSender sender) {
+        sender.sendMessage(
+                ChatColor.translateAlternateColorCodes(
+                        '&', config.getString("success.loginAreaChanged")
+                                .replace("$pluginPrefix", config.getString("pluginPrefix"))
+                ));
+    }
+
     public void loginPrompt(CommandSender sender) {
         sender.sendMessage(
                 ChatColor.translateAlternateColorCodes(

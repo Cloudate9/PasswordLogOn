@@ -22,6 +22,7 @@ If you forgot your password, contact someone with access to the files of the ser
 passwordCreatePrompt: "$pluginPrefix &c1et a password to continue playing, using /password set (password)"
 
 success:
+  loginAreaChanged: "$pluginPrefix &aLogin area successfully changed!"
   passwordSetConfirmation: "$pluginPrefix &aYou set your password as $playerPassword ! You will need to use this password everytime you log on."
   successfulLogIn: "$pluginPrefix &aPassword authenticated! Teleporting to previous location..."
 
