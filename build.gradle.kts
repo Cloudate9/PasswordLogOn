@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "me.awesomemoder316.passwordlogon"
-version = "1.3.0"
+version = "1.3.1"
 
 repositories {
     mavenCentral()
@@ -24,6 +24,7 @@ tasks.compileJava {
 artifacts.archives(tasks.shadowJar)
 
 tasks.shadowJar {
+    minimize()
     archiveFileName.set(rootProject.name + "-" + rootProject.version + ".jar")
     relocate("org.bstats", "me.awesomemoder316.passwordlogon.dependencies")
 }
