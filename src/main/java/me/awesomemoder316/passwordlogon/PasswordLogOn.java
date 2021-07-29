@@ -22,7 +22,7 @@ public class PasswordLogOn extends JavaPlugin {
         Utils.plugin = this;
 
         getConfig().options().copyDefaults(true);
-        getConfig().set("configVersion", "1.3.0");
+        getConfig().set("configVersion", "1.3.1");
         getConfig().options().copyHeader(true);
         saveConfig();
 
