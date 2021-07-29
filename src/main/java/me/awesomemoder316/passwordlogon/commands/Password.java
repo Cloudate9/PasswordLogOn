@@ -121,6 +121,8 @@ public class Password implements CommandExecutor, TabCompleter {
                         Utils.plugin.getConfig().set(dimension + ".z2", Double.parseDouble(args[6]));
                         Utils.plugin.getConfig().options().copyHeader(true);
                         Utils.plugin.saveConfig();
+
+                        new MessageConfig().loginAreaChanged(sender);
                 }
         }
         return true;
