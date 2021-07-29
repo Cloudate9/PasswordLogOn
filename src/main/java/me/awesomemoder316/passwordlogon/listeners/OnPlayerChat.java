@@ -2,7 +2,6 @@ package me.awesomemoder316.passwordlogon.listeners;
 
 import me.awesomemoder316.passwordlogon.MessageConfig;
 import me.awesomemoder316.passwordlogon.Utils;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,8 +24,9 @@ public class OnPlayerChat implements Listener {
                     Utils.teleportEffects(player);
                     new MessageConfig().successfulLogIn(player);
 
+                    Utils.noPasswordEntered.remove(e.getPlayer().getUniqueId());
                     Utils.teleportBack(player);
-                    //Player removed from Utils.noPasswordEntered in Utils.teleportBack(player)
+
 
 
                 } else {
