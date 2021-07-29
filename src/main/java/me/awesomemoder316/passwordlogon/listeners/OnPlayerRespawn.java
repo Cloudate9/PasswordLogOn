@@ -1,5 +1,6 @@
 package me.awesomemoder316.passwordlogon.listeners;
 
+import me.awesomemoder316.passwordlogon.MessageConfig;
 import me.awesomemoder316.passwordlogon.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -13,7 +14,7 @@ public class OnPlayerRespawn implements Listener {
         if (Utils.noPasswordEntered.containsKey(e.getPlayer().getUniqueId())) {
             Utils.defineBedrockPos(e.getPlayer());
             e.getPlayer().teleport(Utils.teleportTo(e.getPlayer().getWorld()));
-            e.getPlayer().sendMessage(ChatColor.RED + "You still need to enter your password in chat!");
+            new MessageConfig().loginPrompt(e.getPlayer());
         }
     }
 }

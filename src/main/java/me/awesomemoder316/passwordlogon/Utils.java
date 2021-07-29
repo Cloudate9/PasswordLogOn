@@ -7,7 +7,9 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -26,10 +28,9 @@ public class Utils {
         p.teleport(teleportTo(p.getWorld()));
 
         if (plugin.getConfig().contains("password." + p.getUniqueId())) {
-            p.sendMessage(ChatColor.GOLD + "[Password Log On]: Enter your password in chat to continue playing.");
-            p.sendMessage(ChatColor.AQUA + "If you forgot your password, contact someone with access to the files of the server.");
+            new MessageConfig().loginPrompt(p);
         } else {
-            p.sendMessage(ChatColor.YELLOW + "[Password Log On] Set a password to continue playing, using /password set [(password)]");
+            new MessageConfig().passwordCreatePrompt(p);
         }
     }
 
@@ -38,58 +39,43 @@ public class Utils {
             @Override
             public void run() {
                 try {
-                    Scanner sc =
-                            new Scanner(new URL("https://servermods.forgesvc.net/servermods/files?projectids=466737").openStream());
-                    StringBuilder sb = new StringBuilder();
 
-                    while (sc.hasNext()) {
-                        sb.append(sc.next());
+                    BufferedReader read = new BufferedReader(
+                            new InputStreamReader(
+                                    new URL(
+                                            "https://api.github.com/repos/awesomemoder316/PasswordLogOn/releases"
+                                    ).openStream()
+                            ));
+
+                    StringBuilder result = new StringBuilder();
+
+                    while (true) {
+                        String output = read.readLine();
+
+                        if (output == null) break;
+                        else result.append("\n").append(output);
                     }
 
-                    String result = sb.toString();
+                    read.close();
 
-                    String[] releases = result.split("\\{"); //Splits per entry. Shows all releases
-                    String mcVersion = null;
-                    String newVersion = null;
-                    String newVersionTemp = null;
+                    String[] jsonList = result.toString().split(",");
 
-                    for (int x = 1; x < releases.length; x ++) { //releases[0] is "{", and releases[releases.length] is "}"
+                    boolean isLatestVersion = true;
+                    String latestTag;
 
-                        String[] allEntriesOfRelease =
-                                releases[x].split(",");
+                    for (String part : jsonList) {
+
+                        if (part.startsWith("\"tag_name\":\"")) {
+
+                            latestTag = part
+                                    .replaceFirst("^\"tag_name\":\"", "");
+
+                            if (latestTag.endsWith("\"")) latestTag = part.substring(0, part.length() - 1);
 
 
-                        for (String string : allEntriesOfRelease) {
-                            if (string.startsWith("\"fileName\":\"")) {
-                                string = string.replace("\"", "");
-                                string = string.replace(".jar", "");
-                                newVersion = newVersionTemp;
-                                newVersionTemp = string.replace("fileName:PasswordLogOn-", "");
-                            }
+                            if (latestTag.equals(plugin.getDescription().getVersion())) {
 
-                            if (string.startsWith("\"gameVersion\":\"")) {
-                                string = string.replace("\"", "");
-                                string = string.replace(".jar", "");
-
-                                if (mcVersion == null) {
-                                    if (x != releases.length - 1) {
-
-                                        mcVersion = string;
-                                        break;
-                                    }
-                                } else {
-
-                                    if (mcVersion.equals(string)) break;
-                                }
-
-                                if (newVersion == null) {
-                                    plugin.getLogger().info( ChatColor.RED + "Failed to check for updates!");
-
-                                    Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, Utils::check, 576000);
-
-                                    return;
-                                }
-                                if (newVersion.equals(plugin.getDescription().getVersion())) {
+                                if (isLatestVersion) {
 
                                     if (firstCheck) {
                                         plugin.getLogger().info(ChatColor.AQUA + "is up to date!");
@@ -99,13 +85,26 @@ public class Utils {
                                     Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, Utils::check, 576000);
                                     return;
                                 }
-                                plugin.getLogger().info(ChatColor.AQUA + "can be updated at https://www.curseforge.com/minecraft/bukkit-plugins/password-log-on!");
-                                update = true;
-                                return;
+
+                                break;
                             }
+
+                            if (latestTag.toLowerCase().contains("alpha") || latestTag.toLowerCase().contains("beta"))
+                                continue;
+
+                            isLatestVersion = false;
+
+                            update = true;
+                            plugin.getLogger().info(ChatColor.AQUA + "can be updated at https://www.curseforge.com/minecraft/bukkit-plugins/password-log-on!");
+
                         }
                     }
-                } catch (IOException ignored) {
+
+                } catch (IOException ex) {
+                    plugin.getLogger().info( ChatColor.RED + "Failed to check for updates!");
+
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, Utils::check, 576000);
+
                 }
             }
         }.runTaskAsynchronously(plugin);

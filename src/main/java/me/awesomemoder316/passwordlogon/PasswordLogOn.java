@@ -22,8 +22,11 @@ public class PasswordLogOn extends JavaPlugin {
         Utils.plugin = this;
 
         getConfig().options().copyDefaults(true);
+        getConfig().set("configVersion", "1.3.0");
         getConfig().options().copyHeader(true);
         saveConfig();
+
+        new MessageConfig();
 
         Bukkit.getPluginManager().registerEvents(new OnPlayerChat(), this);
         Bukkit.getPluginManager().registerEvents(new OnPlayerJoin(), this);
@@ -31,7 +34,6 @@ public class PasswordLogOn extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new OnPlayerRespawn(), this);
         Bukkit.getPluginManager().registerEvents(new RestrictActions(), this);
         Objects.requireNonNull(getCommand("password")).setExecutor(new Password());
-        Objects.requireNonNull(getCommand("password")).setTabCompleter(new TabComplete());
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             Utils.noPasswordEntered.put(p.getUniqueId(), p.getLocation());
@@ -70,6 +72,7 @@ public class PasswordLogOn extends JavaPlugin {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
     }
 
     public void onDisable() {

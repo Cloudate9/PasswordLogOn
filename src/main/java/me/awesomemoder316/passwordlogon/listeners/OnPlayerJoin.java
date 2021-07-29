@@ -13,7 +13,7 @@ public class OnPlayerJoin implements Listener {
     public void informUpdateAndGetPassword(PlayerJoinEvent e) {
         if (Utils.update) { // Start get update
             if (e.getPlayer().isOp()) {
-                e.getPlayer().sendMessage(ChatColor.GOLD + "[Password Log On] " + ChatColor.BLUE + "A new version is available at https://www.spigotmc.org/resources/password-log-in.90958/!");
+                e.getPlayer().sendMessage(ChatColor.GOLD + "[Password Log On] " + ChatColor.BLUE + "can be updated at https://www.curseforge.com/minecraft/bukkit-plugins/password-log-on!");
             }
         }
 
