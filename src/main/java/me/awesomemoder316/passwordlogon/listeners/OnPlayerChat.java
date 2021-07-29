@@ -1,5 +1,6 @@
 package me.awesomemoder316.passwordlogon.listeners;
 
+import me.awesomemoder316.passwordlogon.MessageConfig;
 import me.awesomemoder316.passwordlogon.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -22,17 +23,17 @@ public class OnPlayerChat implements Listener {
                 if (e.getMessage().equals(Utils.plugin.getConfig().get("password." + player.getUniqueId()))) {
                     player.playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 1, 0);
                     Utils.teleportEffects(player);
-                    player.sendMessage(ChatColor.GOLD + "Password authenticated! Teleporting to previous location...");
+                    new MessageConfig().successfulLogIn(player);
 
                     Utils.teleportBack(player);
-                    //Removed from noPasswordEntered in Utils.teleportBack(player)
+                    //Player removed from Utils.noPasswordEntered in Utils.teleportBack(player)
 
 
                 } else {
-                    player.sendMessage(ChatColor.RED + "The password either does not match!");
+                    new MessageConfig().failedLogIn(player);
                 }
             } else {
-                player.sendMessage(ChatColor.RED + "You do not have a password! Set it up using /pw set [(password)]");
+                new MessageConfig().noPasswordSet(player);
             }
         }
     }

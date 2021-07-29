@@ -28,10 +28,9 @@ public class Utils {
         p.teleport(teleportTo(p.getWorld()));
 
         if (plugin.getConfig().contains("password." + p.getUniqueId())) {
-            p.sendMessage(ChatColor.GOLD + "[Password Log On]: Enter your password in chat to continue playing.");
-            p.sendMessage(ChatColor.AQUA + "If you forgot your password, contact someone with access to the files of the server.");
+            new MessageConfig().loginPrompt(p);
         } else {
-            p.sendMessage(ChatColor.YELLOW + "[Password Log On] Set a password to continue playing, using /password set [(password)]");
+            new MessageConfig().passwordCreatePrompt(p);
         }
     }
 

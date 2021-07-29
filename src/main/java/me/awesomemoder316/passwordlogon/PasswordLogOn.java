@@ -26,6 +26,8 @@ public class PasswordLogOn extends JavaPlugin {
         getConfig().options().copyHeader(true);
         saveConfig();
 
+        new MessageConfig();
+
         Bukkit.getPluginManager().registerEvents(new OnPlayerChat(), this);
         Bukkit.getPluginManager().registerEvents(new OnPlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new OnPlayerLeave(), this);
