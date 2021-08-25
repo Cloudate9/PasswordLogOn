@@ -1,7 +1,7 @@
-package me.awesomemoder316.passwordlogon.commands;
+package io.github.awesomemoder316.passwordlogon.commands;
 
-import me.awesomemoder316.passwordlogon.MessageConfig;
-import me.awesomemoder316.passwordlogon.Utils;
+import io.github.awesomemoder316.passwordlogon.MessageConfig;
+import io.github.awesomemoder316.passwordlogon.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
