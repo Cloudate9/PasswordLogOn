@@ -1,7 +1,7 @@
-package me.awesomemoder316.passwordlogon.listeners;
+package io.github.awesomemoder316.passwordlogon.listeners;
 
-import me.awesomemoder316.passwordlogon.MessageConfig;
-import me.awesomemoder316.passwordlogon.Utils;
+import io.github.awesomemoder316.passwordlogon.MessageConfig;
+import io.github.awesomemoder316.passwordlogon.Utils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
