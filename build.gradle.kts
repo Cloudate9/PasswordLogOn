@@ -1,10 +1,11 @@
 plugins {
-    java
     id("com.github.johnrengelman.shadow") version("7.0.0")
+    java
+    id("kr.entree.spigradle") version ("2.2.4")
 }
 
-group = "me.awesomemoder316.passwordlogon"
-version = "1.3.1"
+group = "io.github.awesomemoder316.passwordlogon"
+version = "1.3.2"
 
 repositories {
     mavenCentral()
@@ -26,6 +27,40 @@ artifacts.archives(tasks.shadowJar)
 tasks.shadowJar {
     minimize()
     archiveFileName.set(rootProject.name + "-" + rootProject.version + ".jar")
-    relocate("org.bstats", "me.awesomemoder316.passwordlogon.dependencies")
+    relocate("org.bstats", "io.github.awesomemoder316.passwordlogon.dependencies")
 }
+
+spigot {
+    authors = listOf("Awesomemoder316")
+    apiVersion = "1.14"
+    description = "Require players to use a password to log on!"
+    website = "https://github.com/awesomemoder316/PasswordLogOn"
+
+    commands {
+        create("password") {
+            aliases = listOf("pw")
+            description = "A command to set and reset login password."
+            usage = "/pw [set/reset/setarea]"
+        }
+    }
+}
+
+class BumpLatestVersionMd: Plugin<Project> {
+    override fun apply(project: Project) {
+        project.task("bumpLastestVersionMd") {
+            val latestVersionMd = File("${project.rootDir}/latestVersion.md")
+            doLast {
+                val read = latestVersionMd.bufferedReader()
+                val oldVersion = read.readLine() //Only one line expected.
+                read.close()
+
+                if (oldVersion != project.version) latestVersionMd.writeText(project.version.toString())
+            }
+        }
+    }
+}
+
+apply<BumpLatestVersionMd>()
+
+
 
