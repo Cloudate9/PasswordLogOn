@@ -20,7 +20,8 @@ public class OnPlayerJoin implements Listener {
             }
         }
 
-        askPassword(e.getPlayer());
+        Bukkit.getScheduler().scheduleSyncDelayedTask(
+                Utils.plugin, () -> askPassword(e.getPlayer()), 1);
     }
 
     private static void askPassword(Player p) {
