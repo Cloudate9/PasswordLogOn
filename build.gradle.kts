@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.awesomemoder316.passwordlogon"
-version = "1.3.2"
+version = "1.3.3"
 
 repositories {
     mavenCentral()
@@ -20,6 +20,7 @@ dependencies {
 tasks.compileJava {
     sourceCompatibility = "11"
     targetCompatibility = "11"
+    finalizedBy("bumpLatestVersionMd") //Make updater run all the time.
 }
 
 artifacts.archives(tasks.shadowJar)
@@ -47,8 +48,9 @@ spigot {
 
 class BumpLatestVersionMd: Plugin<Project> {
     override fun apply(project: Project) {
-        project.task("bumpLastestVersionMd") {
-            val latestVersionMd = File("${project.rootDir}/latestVersion.md")
+        project.task("bumpLatestVersionMd") {
+            val latestVersionMd = File(project.rootDir, "latestVersion.md")
+            if (!latestVersionMd.exists()) latestVersionMd.createNewFile()
             doLast {
                 val read = latestVersionMd.bufferedReader()
                 val oldVersion = read.readLine() //Only one line expected.
@@ -61,6 +63,3 @@ class BumpLatestVersionMd: Plugin<Project> {
 }
 
 apply<BumpLatestVersionMd>()
-
-
-
