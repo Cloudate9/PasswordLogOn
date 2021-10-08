@@ -2,7 +2,6 @@ package io.github.awesomemoder316.passwordlogon;
 
 import io.github.awesomemoder316.passwordlogon.commands.Password;
 import io.github.awesomemoder316.passwordlogon.listeners.*;
-import io.github.awesomemoder316.passwordlogon.listeners.*;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -21,7 +20,7 @@ import java.util.*;
 @SpigotPlugin
 public class PasswordLogOn extends JavaPlugin {
 
-    private final String VERSION = "1.3.2";
+    private final String VERSION = "1.3.3";
 
     public void onEnable() {
 
