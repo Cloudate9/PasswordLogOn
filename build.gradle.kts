@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     implementation("org.bstats:bstats-bukkit:2.2.1")
-    compileOnly("org.spigotmc:spigot-api:1.18-pre5-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.18-pre8-R0.1-SNAPSHOT")
 }
 
 tasks.compileJava {
