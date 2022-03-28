@@ -26,7 +26,12 @@ public class OnPlayerJoin implements Listener {
 
     private static void askPassword(Player p) {
         Utils.defineBedrockPos(p);
-        Utils.noPasswordEntered.put(p.getUniqueId(), p.getLocation());
+        if (Utils.plugin.getConfig().contains("location." + p.getUniqueId()))
+            Utils.noPasswordEntered.put(
+                    p.getUniqueId(),
+                    Utils.plugin.getConfig().getLocation("location." + p.getUniqueId())
+            );
+        else Utils.noPasswordEntered.put(p.getUniqueId(), p.getLocation());
 
         p.teleport(Utils.teleportTo(p.getWorld()));
 
