@@ -1,7 +1,7 @@
-package io.github.awesomemoder316.passwordlogon.commands;
+package io.github.cloudate9.passwordlogon.commands;
 
-import io.github.awesomemoder316.passwordlogon.MessageConfig;
-import io.github.awesomemoder316.passwordlogon.Utils;
+import io.github.cloudate9.passwordlogon.MessageConfig;
+import io.github.cloudate9.passwordlogon.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

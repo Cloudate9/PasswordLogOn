@@ -1,4 +1,4 @@
-package io.github.awesomemoder316.passwordlogon;
+package io.github.cloudate9.passwordlogon;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

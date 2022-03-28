@@ -1,7 +1,7 @@
-package io.github.awesomemoder316.passwordlogon.listeners;
+package io.github.cloudate9.passwordlogon.listeners;
 
-import io.github.awesomemoder316.passwordlogon.MessageConfig;
-import io.github.awesomemoder316.passwordlogon.Utils;
+import io.github.cloudate9.passwordlogon.MessageConfig;
+import io.github.cloudate9.passwordlogon.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
