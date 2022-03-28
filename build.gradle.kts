@@ -21,8 +21,8 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
-    implementation("com.github.secretx33.sc-cfg:sccfg-bukkit:main-SNAPSHOT")
-    implementation("com.github.secretx33.sc-cfg:sccfg-yaml:main-SNAPSHOT")
+    //implementation("com.github.secretx33.sc-cfg:sccfg-bukkit:main-SNAPSHOT")
+    //implementation("com.github.secretx33.sc-cfg:sccfg-yaml:main-SNAPSHOT")
     implementation(bStats("3.0.0"))
 }
 
@@ -33,13 +33,14 @@ tasks.compileJava {
 tasks.shadowJar {
     minimize()
     archiveFileName.set(rootProject.name + "-" + rootProject.version + ".jar")
-    relocate("com.github.secretx33.sccfg", "${rootProject.group}.dependencies.com.github.secretx33.sccfg")
+    //relocate("com.github.secretx33.sccfg", "${rootProject.group}.dependencies.com.github.secretx33.sccfg")
     relocate("org.bstats", "io.github.cloudate9.passwordlogon.dependencies")
 }
 
 spigot {
     authors = listOf("Cloudate9")
-    apiVersion = "1.18"
+    apiVersion = "1.14"
+    //apiVersion = "1.18"
     description = "Require players to use a password to log on!"
     website = "https://github.com/cloudate9/PasswordLogOn"
 
