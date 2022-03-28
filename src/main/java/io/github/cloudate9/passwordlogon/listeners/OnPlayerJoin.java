@@ -1,7 +1,7 @@
-package io.github.awesomemoder316.passwordlogon.listeners;
+package io.github.cloudate9.passwordlogon.listeners;
 
-import io.github.awesomemoder316.passwordlogon.MessageConfig;
-import io.github.awesomemoder316.passwordlogon.Utils;
+import io.github.cloudate9.passwordlogon.MessageConfig;
+import io.github.cloudate9.passwordlogon.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +26,12 @@ public class OnPlayerJoin implements Listener {
 
     private static void askPassword(Player p) {
         Utils.defineBedrockPos(p);
-        Utils.noPasswordEntered.put(p.getUniqueId(), p.getLocation());
+        if (Utils.plugin.getConfig().contains("location." + p.getUniqueId()))
+            Utils.noPasswordEntered.put(
+                    p.getUniqueId(),
+                    Utils.plugin.getConfig().getLocation("location." + p.getUniqueId())
+            );
+        else Utils.noPasswordEntered.put(p.getUniqueId(), p.getLocation());
 
         p.teleport(Utils.teleportTo(p.getWorld()));
 

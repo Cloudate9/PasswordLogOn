@@ -1,65 +1,60 @@
+import kr.entree.spigradle.kotlin.bStats
+import kr.entree.spigradle.kotlin.codemc
+import kr.entree.spigradle.kotlin.jitpack
+import kr.entree.spigradle.kotlin.papermc
+
 plugins {
-    id("com.github.johnrengelman.shadow") version("7.0.0")
-    java
+    id("com.github.johnrengelman.shadow") version("7.1.2")
     id("kr.entree.spigradle") version ("2.2.4")
+    java
 }
 
-group = "io.github.awesomemoder316.passwordlogon"
-version = "1.3.3"
+group = "io.github.cloudate9.passwordlogon"
+version = "1.3.4"
 
 repositories {
     mavenCentral()
-    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
+    codemc()
+    jitpack()
+    papermc()
 }
 
 dependencies {
-    implementation("org.bstats:bstats-bukkit:3.0.0")
-    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
+    //implementation("com.github.secretx33.sc-cfg:sccfg-bukkit:main-SNAPSHOT")
+    //implementation("com.github.secretx33.sc-cfg:sccfg-yaml:main-SNAPSHOT")
+    implementation(bStats("3.0.0"))
 }
 
 tasks.compileJava {
-    sourceCompatibility = "11"
-    targetCompatibility = "11"
-    finalizedBy("bumpLatestVersionMd") //Make updater run all the time.
+    options.release.set(17)
 }
-
-artifacts.archives(tasks.shadowJar)
 
 tasks.shadowJar {
     minimize()
     archiveFileName.set(rootProject.name + "-" + rootProject.version + ".jar")
-    relocate("org.bstats", "io.github.awesomemoder316.passwordlogon.dependencies")
+    //relocate("com.github.secretx33.sccfg", "${rootProject.group}.dependencies.com.github.secretx33.sccfg")
+    relocate("org.bstats", "io.github.cloudate9.passwordlogon.dependencies")
 }
 
 spigot {
-    authors = listOf("Awesomemoder316")
+    authors = listOf("Cloudate9")
     apiVersion = "1.14"
+    //apiVersion = "1.18"
     description = "Require players to use a password to log on!"
-    website = "https://github.com/awesomemoder316/PasswordLogOn"
+    website = "https://github.com/cloudate9/PasswordLogOn"
 
     commands {
         create("password") {
             aliases = listOf("pw")
             description = "A command to set and reset login password."
-            usage = "/pw [set/reset/setarea]"
+            usage = "/pw [login/set/reset/setarea]"
+        }
+    }
+
+    permissions {
+        create("passwordlogon.setarea") {
+            description = "Allows you to set the area where players can log on."
         }
     }
 }
-
-class BumpLatestVersionMd: Plugin<Project> {
-    override fun apply(project: Project) {
-        project.task("bumpLatestVersionMd") {
-            val latestVersionMd = File(project.rootDir, "latestVersion.md")
-            if (!latestVersionMd.exists()) latestVersionMd.createNewFile()
-            doLast {
-                val read = latestVersionMd.bufferedReader()
-                val oldVersion = read.readLine() //Only one line expected.
-                read.close()
-
-                if (oldVersion != project.version) latestVersionMd.writeText(project.version.toString())
-            }
-        }
-    }
-}
-
-apply<BumpLatestVersionMd>()
