@@ -20,14 +20,14 @@ import java.util.*;
 @SpigotPlugin
 public class PasswordLogOn extends JavaPlugin {
 
-    private final String VERSION = "1.3.3";
+    private boolean firstCheck = true;
 
     public void onEnable() {
 
         Utils.plugin = this;
 
         getConfig().options().copyDefaults(true);
-        getConfig().set("configVersion", VERSION);
+        getConfig().set("configVersion", null); //Revert a change from earlier versions.
         getConfig().options().copyHeader(true);
         saveConfig();
 
@@ -95,35 +95,47 @@ public class PasswordLogOn extends JavaPlugin {
         }, 0, 60);
     }
 
-    private void check(PasswordLogOn plugin) { //The proper method can be found in "ModersLib" by Awesomemoder316
+    private void check(JavaPlugin plugin) {
+
         new BukkitRunnable() {
             @Override
             public void run() {
                 try {
-
-                    BufferedReader readGit = new BufferedReader(
+                    Scanner readGit = new Scanner(
                             new InputStreamReader(
                                     new URL(
-                                            "https://raw.githubusercontent.com/awesomemoder316/PasswordLogOn/master/latestVersion.md"
+                                            "https://raw.githubusercontent.com/Cloudate9/PasswordLogOn/master/build.gradle.kts"
                                     ).openStream()
-                            ));
+                            )
+                    );
 
-                        String output = readGit.readLine(); //Only one line expected.
+                    var version = "";
+                    while (readGit.hasNext()) {
+                        String line = readGit.nextLine();
 
+                        if (line.startsWith("version = ")) {
+                            //Targeted line example: version = "2.0.0"
+                            //Is removal of suffix '"' required?
+                            version = line.split("\"")[1];
+                            break;
+                        }
+                    }
 
-                    readGit.close();
-
-                    if (output.equals(VERSION) ||
-                            output.toLowerCase().endsWith("alpha")
-                            || output.toLowerCase().endsWith("beta")) {
-
-                        if (Utils.firstCheck) {
-                            getLogger().info(ChatColor.AQUA + "is up to date!");
-                            Utils.firstCheck = false;
+                    if (Objects.equals(version, plugin.getDescription().getVersion())) {
+                        if (firstCheck) {
+                            //No parsing, cause a String is required.
+                            plugin.getLogger().info(ChatColor.AQUA + "is up to date!");
+                            firstCheck = false;
                         }
 
-                        BukkitScheduler scheduler = getServer().getScheduler();
-                        scheduler.scheduleSyncDelayedTask(plugin, () -> check(plugin), 576000);
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                check(plugin);
+                            }
+                            //Arbitrary delay, to reduce unnecessary checks.
+                        }.runTaskLaterAsynchronously(plugin, 576000);
+
                         return;
                     }
 
@@ -133,9 +145,13 @@ public class PasswordLogOn extends JavaPlugin {
                 } catch (IOException ex) {
                     getLogger().info( ChatColor.RED + "Failed to check for updates!");
 
-                    BukkitScheduler scheduler = getServer().getScheduler();
-                    scheduler.scheduleSyncDelayedTask(plugin, () -> check(plugin), 576000);
-
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            check(plugin);
+                        }
+                        //Arbitrary delay, to reduce unnecessary checks.
+                    }.runTaskLaterAsynchronously(plugin, 576000);
                 }
             }
         }.runTaskAsynchronously(this);
