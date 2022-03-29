@@ -14,16 +14,12 @@ public class OnPlayerLeave implements Listener {
         Player p = e.getPlayer();
 
         if (Utils.noPasswordEntered.containsKey(p.getUniqueId())) {
-            System.out.println(Utils.noPasswordEntered.get(p.getUniqueId()));
             Utils.plugin.getConfig().set("location." + p.getUniqueId(), Utils.noPasswordEntered.get(p.getUniqueId()));
             Utils.plugin.getConfig().options().copyHeader(true);
             Utils.plugin.saveConfig();
-            System.out.println(Utils.plugin.getConfig().getLocation("location." + p.getUniqueId()));
             Utils.noPasswordEntered.remove(p.getUniqueId());
             return;
         }
-
-        System.out.println(p.getLocation());
         Utils.plugin.getConfig().set("location." + p.getUniqueId(), p.getLocation());
     }
 }
