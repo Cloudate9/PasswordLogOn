@@ -88,12 +88,13 @@ public class PasswordLogOn extends JavaPlugin {
     private void giveResistance() {
         BukkitScheduler scheduler = getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(Utils.plugin, () -> {
-            for (UUID u : Utils.noPasswordEntered.keySet()) {
+            Iterator<UUID> uuids = Utils.noPasswordEntered.keySet().iterator();
+            while (uuids.hasNext()) {
+                UUID u = uuids.next();
                 Player p = Bukkit.getPlayer(u);
 
-                if (p != null) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 61, 254));
-                }
+                if (p == null) uuids.remove();
+                else p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 61, 254));
             }
         }, 0, 60);
     }
