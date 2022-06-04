@@ -88,9 +88,13 @@ public class PasswordLogOn extends JavaPlugin {
     private void giveResistance() {
         BukkitScheduler scheduler = getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(Utils.plugin, () -> {
-            for (UUID u : Utils.noPasswordEntered.keySet()) {
-                //noinspection ConstantConditions, if player with UUID u leaves, it would have been removed.
-                Bukkit.getPlayer(u).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 61, 254));
+            Iterator<UUID> uuids = Utils.noPasswordEntered.keySet().iterator();
+            while (uuids.hasNext()) {
+                UUID u = uuids.next();
+                Player p = Bukkit.getPlayer(u);
+
+                if (p == null) uuids.remove();
+                else p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 61, 254));
             }
         }, 0, 60);
     }
