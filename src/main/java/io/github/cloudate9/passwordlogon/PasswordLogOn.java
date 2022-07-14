@@ -17,7 +17,6 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
-@SpigotPlugin
 public class PasswordLogOn extends JavaPlugin {
 
     private boolean firstCheck = true;

@@ -5,7 +5,7 @@ import kr.entree.spigradle.kotlin.papermc
 
 plugins {
     id("com.github.johnrengelman.shadow") version("7.1.2")
-    id("kr.entree.spigradle") version ("2.2.4")
+    id("kr.entree.spigradle") version ("2.4.2")
     java
 }
 
@@ -42,6 +42,7 @@ spigot {
     apiVersion = "1.14"
     //apiVersion = "1.18"
     description = "Require players to use a password to log on!"
+    excludeLibraries = listOf("*")
     website = "https://github.com/cloudate9/PasswordLogOn"
 
     commands {
