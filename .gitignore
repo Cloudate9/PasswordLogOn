@@ -3,3 +3,5 @@
 /.gradle/
 /build/
 /build/classes/java/main/
+/out/
+/debug/

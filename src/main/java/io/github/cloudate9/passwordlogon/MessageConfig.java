@@ -6,6 +6,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
+//TO DO: /remember <time in days>
+//track username with ip, same ip, then remember :)
+
+//TO DO: anti-bot questions
+
 @SuppressWarnings("ConstantConditions")
 public class MessageConfig {
 
