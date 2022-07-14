@@ -2,6 +2,7 @@ package io.github.cloudate9.passwordlogon.commands;
 
 import io.github.cloudate9.passwordlogon.MessageConfig;
 import io.github.cloudate9.passwordlogon.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -84,6 +85,12 @@ public class Password implements CommandExecutor, TabCompleter {
 
                         if (sender instanceof Player) {
                             new MessageConfig().rejectPlayer(sender);
+                            if(sender.hasPermission("passwordlogon.setarea")){
+                                break;
+                            }else {
+                                sender.sendMessage("You do not have the required permission to execute this command");
+                                return true;
+                            }
                         }
 
                         if (args.length < 7) {
