@@ -20,117 +20,114 @@ public class Password implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("password")) {
 
-                if (args.length < 2) {
-                    new MessageConfig().incorrectUsage(sender, "generic");
-                    return true;
-                }
+            if (args.length < 2) {
+                new MessageConfig().incorrectUsage(sender, "generic");
+                return true;
+            }
 
-                switch (args[0].toLowerCase()) {
-                    case "set":
+            switch (args[0].toLowerCase()) {
+                case "set":
 
-                        if (!(sender instanceof Player)) {
-                            new MessageConfig().rejectConsole(sender);
-                            return true;
-                        }
-
-                        Player p = (Player) sender;
-
-                        if (Utils.plugin.getConfig().contains("password." + p.getUniqueId())) {
-                            new MessageConfig().alreadySetPassword(sender);
-                            return true;
-                        }
-
-                            String playerPassword = args[1];
-                            Utils.plugin.getConfig().set("password." + p.getUniqueId(), playerPassword);
-                            Utils.plugin.getConfig().options().copyHeader(true);
-                            Utils.plugin.saveConfig();
-                            new MessageConfig().passwordSetConfirmation(sender, playerPassword);
-
-                    return true;
-
-                    case "reset":
-
-                        if (!(sender instanceof Player)) {
-                            new MessageConfig().rejectConsole(sender);
-                            return true;
-                        }
-
-                        p = (Player) sender;
-
-                        if (!(Utils.plugin.getConfig().contains("password." + p.getUniqueId()))) {
-                            new MessageConfig().noPasswordSet(sender);
-                            return true;
-                        }
-                            if (args.length < 3) {
-                                new MessageConfig().incorrectUsage(sender, "reset");
-                                return true;
-                            }
-                                String s = Utils.plugin.getConfig().getString("password." + p.getUniqueId());
-                                String oldPassword = args[1];
-                                String newPassword = args[2];
-
-                        assert s != null;
-                        if (s.equals(oldPassword)) {
-                                    Utils.plugin.getConfig().set("password." + p.getUniqueId(), newPassword);
-                                    Utils.plugin.getConfig().options().copyHeader(true);
-                                    Utils.plugin.saveConfig();
-                                    new MessageConfig().passwordSetConfirmation(sender, newPassword);
-                                } else {
-                                    new MessageConfig().failedReset(sender);
-                                }
-
+                    if (!(sender instanceof Player)) {
+                        new MessageConfig().rejectConsole(sender);
                         return true;
+                    }
 
-                    case "setarea":
+                    Player p = (Player) sender;
 
-                        if (sender instanceof Player) {
-                            new MessageConfig().rejectPlayer(sender);
-                            if(sender.hasPermission("passwordlogon.setarea")){
-                                break;
-                            }else {
-                                sender.sendMessage("You do not have the required permission to execute this command");
-                                return true;
-                            }
-                        }
+                    if (Utils.plugin.getConfig().contains("password." + p.getUniqueId())) {
+                        new MessageConfig().alreadySetPassword(sender);
+                        return true;
+                    }
 
-                        if (args.length < 7) {
-                            new MessageConfig().incorrectUsage(sender, "setArea");
-                            return true;
-                        }
+                    String playerPassword = args[1];
+                    Utils.plugin.getConfig().set("password." + p.getUniqueId(), playerPassword);
+                    Utils.plugin.getConfig().options().copyHeader(true);
+                    Utils.plugin.saveConfig();
+                    new MessageConfig().passwordSetConfirmation(sender, playerPassword);
 
-                        String dimension;
-                        switch (args[1].toLowerCase()) {
+                    return true;
 
-                            case "overworld":
-                            case "nether":
-                            case "end":
-                                dimension = args[1].toLowerCase();
-                                break;
+                case "reset":
 
-                            default:
-                                new MessageConfig().incorrectUsage(sender, "setArea");
-                                return true;
-                        }
+                    if (!(sender instanceof Player)) {
+                        new MessageConfig().rejectConsole(sender);
+                        return true;
+                    }
 
-                        if (cannotParseDouble(args[2]) ||
-                                cannotParseDouble(args[3]) ||
-                                cannotParseDouble(args[4]) ||
-                                cannotParseDouble(args[5]) ||
-                                cannotParseDouble(args[6])
-                        ) {
-                            new MessageConfig().incorrectUsage(sender, "setAreaParameterType");
-                            return true;
-                        }
-                        Utils.plugin.getConfig().set(dimension + ".x1", Double.parseDouble(args[2]));
-                        Utils.plugin.getConfig().set(dimension + ".x2", Double.parseDouble(args[3]));
-                        Utils.plugin.getConfig().set(dimension + ".y", Double.parseDouble(args[4]));
-                        Utils.plugin.getConfig().set(dimension +".z1", Double.parseDouble(args[5]));
-                        Utils.plugin.getConfig().set(dimension + ".z2", Double.parseDouble(args[6]));
+                    p = (Player) sender;
+
+                    if (!(Utils.plugin.getConfig().contains("password." + p.getUniqueId()))) {
+                        new MessageConfig().noPasswordSet(sender);
+                        return true;
+                    }
+                    if (args.length < 3) {
+                        new MessageConfig().incorrectUsage(sender, "reset");
+                        return true;
+                    }
+                    String s = Utils.plugin.getConfig().getString("password." + p.getUniqueId());
+                    String oldPassword = args[1];
+                    String newPassword = args[2];
+
+                    assert s != null;
+                    if (s.equals(oldPassword)) {
+                        Utils.plugin.getConfig().set("password." + p.getUniqueId(), newPassword);
                         Utils.plugin.getConfig().options().copyHeader(true);
                         Utils.plugin.saveConfig();
+                        new MessageConfig().passwordSetConfirmation(sender, newPassword);
+                    } else {
+                        new MessageConfig().failedReset(sender);
+                    }
 
-                        new MessageConfig().loginAreaChanged(sender);
-                }
+                    return true;
+
+                case "setarea":
+
+                    if (sender instanceof Player) {
+                        if (!sender.hasPermission("passwordlogon.setarea")) {
+                            new MessageConfig().rejectPlayer(sender);
+                            return true;
+                        }
+                    }
+
+                    if (args.length < 7) {
+                        new MessageConfig().incorrectUsage(sender, "setArea");
+                        return true;
+                    }
+
+                    String dimension;
+                    switch (args[1].toLowerCase()) {
+
+                        case "overworld":
+                        case "nether":
+                        case "end":
+                            dimension = args[1].toLowerCase();
+                            break;
+
+                        default:
+                            new MessageConfig().incorrectUsage(sender, "setArea");
+                            return true;
+                    }
+
+                    if (cannotParseDouble(args[2]) ||
+                            cannotParseDouble(args[3]) ||
+                            cannotParseDouble(args[4]) ||
+                            cannotParseDouble(args[5]) ||
+                            cannotParseDouble(args[6])
+                    ) {
+                        new MessageConfig().incorrectUsage(sender, "setAreaParameterType");
+                        return true;
+                    }
+                    Utils.plugin.getConfig().set(dimension + ".x1", Double.parseDouble(args[2]));
+                    Utils.plugin.getConfig().set(dimension + ".x2", Double.parseDouble(args[3]));
+                    Utils.plugin.getConfig().set(dimension + ".y", Double.parseDouble(args[4]));
+                    Utils.plugin.getConfig().set(dimension + ".z1", Double.parseDouble(args[5]));
+                    Utils.plugin.getConfig().set(dimension + ".z2", Double.parseDouble(args[6]));
+                    Utils.plugin.getConfig().options().copyHeader(true);
+                    Utils.plugin.saveConfig();
+
+                    new MessageConfig().loginAreaChanged(sender);
+            }
         }
         return true;
 
