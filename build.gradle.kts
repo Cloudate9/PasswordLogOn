@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "io.github.cloudate9.passwordlogon"
-version = "1.3.6"
+version = "1.3.7"
 
 repositories {
     mavenCentral()
