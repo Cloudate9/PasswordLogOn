@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PrepareForAuth implements Listener {
 
@@ -29,7 +30,14 @@ public class PrepareForAuth implements Listener {
         };
 
         assert teleportToLocation != null;
-        e.getPlayer().teleport(teleportToLocation);
+
+        // Delay teleport by 1 tick so that server logs show the player's correct log in location
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                e.getPlayer().teleport(teleportToLocation);
+            }
+        }.runTaskLater(plugin, 1L);
     }
 
 }
