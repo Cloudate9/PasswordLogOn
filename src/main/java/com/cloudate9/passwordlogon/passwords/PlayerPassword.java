@@ -22,11 +22,7 @@ public class PlayerPassword {
         passwordPath = Path.of(plugin.getDataFolder().getAbsolutePath(), "passwords.yml");
 
         if (!Files.exists(passwordPath)) {
-            try {
-                Files.createFile(passwordPath);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            plugin.saveResource("passwords.yml", false);
         }
         passwords = YamlConfiguration.loadConfiguration(passwordPath.toFile());
     }
