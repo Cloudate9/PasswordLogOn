@@ -17,10 +17,17 @@ public class PlayerPassword {
     private final Path passwordPath;
     private YamlConfiguration passwords;
 
-    public PlayerPassword(Plugin plugin) throws IOException {
+    public PlayerPassword(Plugin plugin) {
         this.plugin = plugin;
         passwordPath = Path.of(plugin.getDataFolder().getAbsolutePath(), "passwords.yml");
-        if (!Files.exists(passwordPath)) Files.createFile(passwordPath);
+
+        if (!Files.exists(passwordPath)) {
+            try {
+                Files.createFile(passwordPath);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
         passwords = YamlConfiguration.loadConfiguration(passwordPath.toFile());
     }
 
