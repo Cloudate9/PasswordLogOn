@@ -1,7 +1,4 @@
-import kr.entree.spigradle.kotlin.bStats
-import kr.entree.spigradle.kotlin.codemc
-import kr.entree.spigradle.kotlin.jitpack
-import kr.entree.spigradle.kotlin.papermc
+import kr.entree.spigradle.kotlin.*
 
 plugins {
     id("com.github.johnrengelman.shadow") version("7.1.2")
@@ -9,20 +6,16 @@ plugins {
     java
 }
 
-group = "io.github.cloudate9.passwordlogon"
-version = "1.3.7"
+group = "com.cloudate9.passwordlogon"
+version = "2.0.0"
 
 repositories {
     mavenCentral()
-    codemc()
-    jitpack()
     papermc()
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
-    //implementation("com.github.secretx33.sc-cfg:sccfg-bukkit:main-SNAPSHOT")
-    //implementation("com.github.secretx33.sc-cfg:sccfg-yaml:main-SNAPSHOT")
+    compileOnly(paper("1.19.2"))
     implementation(bStats("3.0.0"))
 }
 
@@ -30,17 +23,35 @@ tasks.compileJava {
     options.release.set(17)
 }
 
-tasks.shadowJar {
-    minimize()
-    archiveFileName.set(rootProject.name + "-" + rootProject.version + ".jar")
-    //relocate("com.github.secretx33.sccfg", "${rootProject.group}.dependencies.com.github.secretx33.sccfg")
-    relocate("org.bstats", "io.github.cloudate9.passwordlogon.dependencies")
+tasks {
+    prepareSpigotPlugins {
+        setDependsOn(mutableListOf(shadowJar))
+    }
+
+    runSpigot {
+        jvmArgs = mutableListOf(
+            "-Xmx2G",
+            "-Xms2G",
+            "-XX:+UseZGC",
+            "-XX:+ZUncommit",
+            "-XX:ZUncommitDelay=3600",
+            "-XX:+ZProactive",
+            "-XX:+AlwaysPreTouch",
+            "-XX:+DisableExplicitGC",
+        )
+
+        setDependsOn(mutableListOf(acceptSpigotEula, configSpigot, prepareSpigotPlugins))
+    }
+
+    shadowJar {
+        archiveFileName.set(rootProject.name + "-" + rootProject.version + ".jar")
+        relocate("org.bstats", "com.cloudate9.passwordlogon.dependencies")
+    }
 }
 
 spigot {
     authors = listOf("Cloudate9")
-    apiVersion = "1.14"
-    //apiVersion = "1.18"
+    apiVersion = "1.19"
     description = "Require players to use a password to log on!"
     excludeLibraries = listOf("*")
     website = "https://github.com/cloudate9/PasswordLogOn"
