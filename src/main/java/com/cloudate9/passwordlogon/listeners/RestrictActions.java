@@ -22,7 +22,7 @@ public class RestrictActions implements Listener {
 
     @EventHandler
     public void restrictMovement(PlayerMoveEvent e) {
-        if (PlayerStatus.getNonAuthPlayers().containsKey(e.getPlayer().getName())) e.setCancelled(true);
+        if (e.hasChangedBlock() && PlayerStatus.getNonAuthPlayers().containsKey(e.getPlayer().getName())) e.setCancelled(true);
     }
 
     @EventHandler
