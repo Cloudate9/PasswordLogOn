@@ -24,12 +24,25 @@ public class PrepareForAuth implements Listener {
         e.getPlayer().setGameMode(GameMode.SPECTATOR);
 
         Location teleportToLocation = switch (e.getPlayer().getWorld().getEnvironment()) {
-            case NETHER -> plugin.getConfig().getLocation("location.nether");
-            case THE_END -> plugin.getConfig().getLocation("location.end");
-            default -> plugin.getConfig().getLocation("location.overworld");
+            case NETHER -> new Location(
+                    e.getPlayer().getWorld(),
+                    plugin.getConfig().getDouble("location.nether.x"),
+                    plugin.getConfig().getDouble("location.nether.y"),
+                    plugin.getConfig().getDouble("location.nether.z")
+            );
+            case THE_END -> new Location(
+                    e.getPlayer().getWorld(),
+                    plugin.getConfig().getDouble("location.end.x"),
+                    plugin.getConfig().getDouble("location.end.y"),
+                    plugin.getConfig().getDouble("location.end.z")
+            );
+            default -> new Location(
+                    e.getPlayer().getWorld(),
+                    plugin.getConfig().getDouble("location.overworld.x"),
+                    plugin.getConfig().getDouble("location.overworld.y"),
+                    plugin.getConfig().getDouble("location.overworld.z")
+            );
         };
-
-        assert teleportToLocation != null;
 
         // Delay teleport by 1 tick so that server logs show the player's correct log in location
         new BukkitRunnable() {
