@@ -27,7 +27,7 @@ public class PasswordLogOn extends JavaPlugin {
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new NoAuthLogout(), this);
         Bukkit.getPluginManager().registerEvents(new PrepareForAuth(this), this);
-        Bukkit.getPluginManager().registerEvents(new RestrictActions(messageConfig, miniMessage), this);
+        Bukkit.getPluginManager().registerEvents(new RestrictActions(messageConfig, miniMessage, this), this);
 
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             if (!getConfig().getBoolean("no_auth_should_glow")) return;

@@ -2,18 +2,33 @@
 
 location:
   overworld:
-    x: 0.0
-    y: 90.0
-    z: 0.0
+    corner_1:
+      x: -2.0
+      y: 90
+      z: -2.0
+    corner_2:
+      x: 2.0
+      y: 94
+      z: 2.0
 
   nether:
-    x: 0.0
-    y: 60.0
-    z: 0.0
+    corner_1:
+      x: -2.0
+      y: 0.0
+      z: -2.0
+    corner_2:
+      x: 2.0
+      y: 0.0
+      z: 2.0
 
   end:
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    corner_1:
+      x: -2.0
+      y: 0.0
+      z: -2.0
+    corner_2:
+      x: 2.0
+      y: 0.0
+      z: 2.0
 
 no_auth_should_glow: true
