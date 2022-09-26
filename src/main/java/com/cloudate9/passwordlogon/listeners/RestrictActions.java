@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class RestrictActions implements Listener {
 
@@ -36,6 +37,12 @@ public class RestrictActions implements Listener {
         Component explainedRestrictedChat = miniMessage.deserializeOrNull(
                 messageConfig.getOrCreateConfig().getString("password_prompt"));
         if (explainedRestrictedChat != null) e.getPlayer().sendMessage(explainedRestrictedChat);
+    }
+
+    @EventHandler
+    public void restrictSpectatorTeleport(PlayerTeleportEvent e) {
+        // TODO Check if this restricting of teleportation actually works
+        if (PlayerStatus.getNonAuthPlayers().containsKey(e.getPlayer().getName())) e.setCancelled(true);
     }
 
 }
